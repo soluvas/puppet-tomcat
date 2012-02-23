@@ -1,0 +1,5 @@
+h1. Tomcat Puppet module
+
+h2. Sample Usage
+
+bc. class { tomcat: version => 6 }
