@@ -16,6 +16,14 @@ class tomcat (
 ) {
 
   $package = "tomcat${version}"
+  $user = "tomcat${version}"
+  $group = "tomcat${version}"
+  $dir = "/usr/share/tomcat${version}"
+  $conf_dir = "/etc/tomcat${version}"
+  $lib_dir = "${dir}/lib"
+  $shared_dir = "/var/lib/tomcat${version}/shared"
+  $webapps_dir = "/var/lib/tomcat${version}/webapps"
+  $logs_dir = "/var/lib/tomcat${version}/logs"
   
   package {
   	'tomcat': name => $package, ensure => present;
