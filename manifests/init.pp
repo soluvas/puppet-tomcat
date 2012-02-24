@@ -53,7 +53,7 @@ class tomcat (
   service { tomcat:
   	name => $package,
   	enable => $enable_service,
-  	ensure => running,
+  	ensure => $enable_service ? { true => running, default => undef },
   	hasstatus => true,
   	require => [ Package['tomcat'], Exec['tomcat_java_opts'], Exec['tomcat_java_home'] ]
   }
