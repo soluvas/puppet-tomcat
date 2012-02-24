@@ -13,7 +13,9 @@
 # [Remember: No empty lines between comments and class definition]
 class tomcat (
 	$version,
-	$java_home = '/usr/lib/jvm/java-1.7.0-openjdk-amd64'
+	$java_home = '/usr/lib/jvm/java-1.7.0-openjdk-amd64',
+	$catalina_opts = '-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC',
+	$enable_service = true
 ) {
 
   $package = "tomcat${version}"
@@ -30,20 +32,30 @@ class tomcat (
   	'tomcat': name => $package, ensure => present;
   	'tomcat-admin': name => "${package}-admin", ensure => present;
   }
-  exec { tomcat_java_home:
-  	command => "sed -i -e '/JAVA_HOME/ c JAVA_HOME=\"${java_home}\"' /etc/default/tomcat6",
+  # Note: Tried augeas, but it didn't work with space-separated values
+  # like JAVA_OPTS :-( should file a bug there
+  exec { tomcat_java_opts:
+  	command => "sed -i -e '/^#\\?JAVA_OPTS=/ c JAVA_OPTS=\"${catalina_opts}\"' /etc/default/tomcat6",
   	path => ['/bin', '/usr/bin'],
   	logoutput => true,
-  	unless => "grep '${java_home}' /etc/default/tomcat6",
+  	unless => "grep '^JAVA_OPTS=\"${catalina_opts}\"' /etc/default/tomcat6",
   	require => Package['tomcat'],
   	notify => Service['tomcat']
   }
-  service { 'tomcat':
+  exec { tomcat_java_home:
+  	command => "sed -i -e '/^#\\?JAVA_HOME=/ c JAVA_HOME=\"${java_home}\"' /etc/default/tomcat6",
+  	path => ['/bin', '/usr/bin'],
+  	logoutput => true,
+  	unless => "grep '^JAVA_HOME=\"${java_home}\"' /etc/default/tomcat6",
+  	require => Package['tomcat'],
+  	notify => Service['tomcat']
+  }
+  service { tomcat:
   	name => $package,
-  	enable => true,
+  	enable => $enable_service,
   	ensure => running,
   	hasstatus => true,
-  	require => [ Package['tomcat'], Exec['tomcat_java_home'] ]
+  	require => [ Package['tomcat'], Exec['tomcat_java_opts'], Exec['tomcat_java_home'] ]
   }
 
 }

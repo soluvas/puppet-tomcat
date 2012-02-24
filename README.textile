@@ -6,3 +6,11 @@ bc. class { tomcat:
   version => 6,
   java_home => '/usr/lib/jvm/java-1.7.0-openjdk-amd64'
 }
+
+Defaults:
+
+* *catalina_opts*: @-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC@
+
+For Alfresco 4 :
+
+bc. catalina_opts => '-Djava.awt.headless=true -Xmx1024M -XX:PermSize=128 +UseConcMarkSweepGC'
