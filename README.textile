@@ -4,13 +4,32 @@ h2. Sample Usage
 
 bc. class { tomcat:
   version => 6,
-  java_home => '/usr/lib/jvm/java-1.7.0-openjdk-amd64'
 }
 
-Defaults:
+h2. Simple Tomcat Config
 
-* *catalina_opts*: @-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC@
+This module manages simple tomcat config in /etc/default/tomcat{6,7}
+
+Sample:
+
+bc.   class { tomcat::config:
+    java_home  => '/usr/lib/jvm/java-6-openjdk-amd64',
+    java_opts  => '-Djava.awt.headless=true -Xms128m -Xmx1500m -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC',
+  }
+
+Parameters:
+
+1. *java_home* (required)
+2. *java_opts*, default: @-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC@
 
 For Alfresco 4 :
 
-bc. catalina_opts => '-Djava.awt.headless=true -Xmx1024M -XX:PermSize=128 +UseConcMarkSweepGC'
+bc. java_opts => '-Djava.awt.headless=true -Xms128m -Xmx1024m -XX:MaxPermSize=128m +UseConcMarkSweepGC'
+
+Note: If you add other environment variables, it's better to configure Tomcat yourself
+without this class, e.g. :
+
+bc. # Nexus
+PLEXUS_NEXUS_WORK=/var/lib/nexus
+# Jenkins
+JENKINS_HOME=/home/jenkins/.jenkins
