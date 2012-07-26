@@ -15,26 +15,26 @@ class tomcat (
 	$version,
 	$enable_service  = true
 ) {
-  $package = "tomcat${version}"
-  $user = "tomcat${version}"
-  $group = "tomcat${version}"
-  $dir = "/usr/share/tomcat${version}"
-  $conf_dir = "/etc/tomcat${version}"
-  $lib_dir = "${dir}/lib"
-  $shared_dir = "/var/lib/tomcat${version}/shared"
+  $package     = "tomcat${version}"
+  $user        = "tomcat${version}"
+  $group       = "tomcat${version}"
+  $dir         = "/usr/share/tomcat${version}"
+  $conf_dir    = "/etc/tomcat${version}"
+  $lib_dir     = "${dir}/lib"
+  $shared_dir  = "/var/lib/tomcat${version}/shared"
   $webapps_dir = "/var/lib/tomcat${version}/webapps"
-  $logs_dir = "/var/lib/tomcat${version}/logs"
+  $logs_dir    = "/var/lib/tomcat${version}/logs"
 
   package {
   	'tomcat': name => $package, ensure => present;
   	'tomcat-admin': name => "${package}-admin", ensure => present;
   }
   service { tomcat:
-  	name => $package,
-  	enable => $enable_service,
-  	ensure => $enable_service ? { true => running, default => undef },
+  	name      => $package,
+  	enable    => $enable_service,
+  	ensure    => $enable_service ? { true => running, default => undef },
   	hasstatus => true,
-  	require => [ Package['tomcat'], Exec['tomcat_java_opts'], Exec['tomcat_java_home'] ]
+  	require   => Package['tomcat'],
   }
 
 }

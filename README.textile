@@ -33,3 +33,12 @@ bc. # Nexus
 PLEXUS_NEXUS_WORK=/var/lib/nexus
 # Jenkins
 JENKINS_HOME=/home/jenkins/.jenkins
+
+You add somehing like this:
+
+bc.  # Important: Must add user tomcat6 to plugdev if $PLEXUS_NEXUS_WORK is in NTFS
+  file { "/etc/default/tomcat6":
+  	mode    => 0644,
+  	source  => 'puppet:///modules/bippodeveloper/annafi/tomcat6_default',
+  	require => Class['tomcat'],
+  }
