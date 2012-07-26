@@ -24,7 +24,7 @@
 # }
 # [Remember: No empty lines between comments and class definition]
 class tomcat::config (
-	$java_home, #      = '/usr/lib/jvm/java-7-openjdk-amd64',
+	$java_home   = '', #      = '/usr/lib/jvm/java-7-openjdk-amd64',
 	$java_opts   = '-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC'
 ) {
   file { "/etc/default/tomcat${tomcat::version}":

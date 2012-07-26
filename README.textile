@@ -19,7 +19,7 @@ bc.   class { tomcat::config:
 
 Parameters:
 
-1. *java_home* (required)
+1. *java_home* (no default)
 2. *java_opts*, default: @-Djava.awt.headless=true -Xmx128m -XX:+UseConcMarkSweepGC@
 
 For Alfresco 4 :
