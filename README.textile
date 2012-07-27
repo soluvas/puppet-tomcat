@@ -6,6 +6,11 @@ bc. class { tomcat:
   version => 6,
 }
 
+It will install @libapr1@ and @libtcnative-1@ packages. If you don't want them, add:
+
+bc. native_libs => false,
+
+
 h2. Simple Tomcat Config
 
 This module manages simple tomcat config in /etc/default/tomcat{6,7}

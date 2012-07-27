@@ -13,7 +13,8 @@
 # [Remember: No empty lines between comments and class definition]
 class tomcat (
 	$version,
-	$enable_service  = true
+	$enable_service  = true,
+	$native_libs     = true,
 ) {
   $package     = "tomcat${version}"
   $user        = "tomcat${version}"
@@ -35,6 +36,15 @@ class tomcat (
   	ensure    => $enable_service ? { true => running, default => undef },
   	hasstatus => true,
   	require   => Package['tomcat'],
+  }
+
+  if $native_libs == true {
+  	package {
+  	  libapr1:       ensure => present, notify => Service['tomcat'];
+  	  libtcnative-1: ensure => present, notify => Service['tomcat'];
+  	}
+  	Package['libapr1']       -> Package['tomcat']
+  	Package['libtcnative-1'] -> Package['tomcat']
   }
 
 }
